@@ -6,7 +6,7 @@ import TodoItem from "../TodoItem/TodoItem";
 import "./ContainerC.css";
 
 function Container() {
-  const initialState = JSON.parse(localStorage.getItem("todos"));
+  const initialState = JSON.parse(localStorage.getItem("todos") || "[]");
   const [date, setDate] = useState(new Date());
   const [todos, setTodos] = useState(initialState);
 
