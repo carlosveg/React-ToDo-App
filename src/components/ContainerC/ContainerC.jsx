@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Form from "../Form/Form";
@@ -6,16 +6,33 @@ import TodoItem from "../TodoItem/TodoItem";
 import "./ContainerC.css";
 
 function Container() {
+  const initialState = JSON.parse(localStorage.getItem("todos"));
   const [date, setDate] = useState(new Date());
-  const initialState = [
-    { id: "1", desc: "Learn react 1", createdAt: date },
-    { id: "2", desc: "Learn react 2", createdAt: date },
-    { id: "3", desc: "Learn react 3", createdAt: date },
-  ];
   const [todos, setTodos] = useState(initialState);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  useEffect(() => {
+    localStorage.setItem("date", date.toDateString());
+  }, [date]);
 
   const chanceDate = (date) => {
     setDate(date);
+  };
+
+  const editTodo = (id, todo) => {
+    const newTodos = todos.map((todoItem) => {
+      if (todoItem.id === id) return { ...todoItem, desc: todo };
+      return todoItem;
+    });
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = (id) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
   };
 
   return (
@@ -23,16 +40,24 @@ function Container() {
       <section className="calendar">
         <Calendar onClickDay={chanceDate} value={date} />
       </section>
-      <h3>{date.toDateString()}</h3>
-      <Form todos={todos} setTodos={setTodos} date={date} />
+      <Form todos={todos} setTodos={setTodos} date={date.toDateString()} />
       <section className="todo-list">
-        {todos
-          .filter(
-            (todo) => todo.createdAt.toDateString() === date.toDateString()
-          )
-          .map(({ id, desc, createdAt }) => (
-            <TodoItem key={id} desc={desc} createdAt={createdAt} />
-          ))}
+        {todos.length > 0 ? (
+          todos
+            .filter((todo) => todo.createdAt === date.toDateString())
+            .map(({ id, desc, createdAt }) => (
+              <TodoItem
+                key={id}
+                id={id}
+                desc={desc}
+                createdAt={createdAt}
+                deleteTodo={deleteTodo}
+                editTodo={editTodo}
+              />
+            ))
+        ) : (
+          <h3>Empty list :c</h3>
+        )}
       </section>
     </main>
   );

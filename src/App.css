@@ -9,10 +9,5 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
   margin: auto;
-}
-
-.br {
-  border: 1px solid red;
 }
