@@ -1,0 +1,18 @@
+body {
+  background: #f0e3ca;
+}
+
+.container {
+  width: 90%;
+  max-width: 90rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red;
+  margin: auto;
+}
+
+.br {
+  border: 1px solid red;
+}
