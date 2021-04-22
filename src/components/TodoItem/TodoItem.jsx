@@ -1,6 +1,6 @@
 import "./TodoItem.css";
 
-function TodoItem({ desc }) {
+function TodoItem({ desc, createdAt }) {
   return (
     <section className="card-todo">
       <div className="card-title">
